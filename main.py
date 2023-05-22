@@ -229,7 +229,7 @@ class MainWindow:
             with open(file[0], "r") as import_:         # open the file for reading
                 settings = json.load(import_)           # load the settings from the file
 
-            # set the values of the main window to the values of the settings (can they have the config file open at the same time? i dunno)
+            # set the values of the main window to the values of the settings (can they have the config file open at the same time? i dunno. EDIT: no they can't)
             self.ui.label_left_name.setText(settings["left_name"])
             self.ui.label_right_name.setText(settings["right_name"])
             self.ui.button_left_score_top.setText(settings["button_top"])

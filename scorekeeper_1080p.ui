@@ -6,18 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>960</width>
-    <height>540</height>
+    <width>1920</width>
+    <height>1080</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Scorekeeper</string>
-  </property>
-  <property name="autoFillBackground">
-   <bool>false</bool>
-  </property>
-  <property name="styleSheet">
-   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="layoutWidget">
@@ -25,8 +19,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>281</width>
-      <height>511</height>
+      <width>521</width>
+      <height>1051</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="layout_left">
@@ -77,8 +71,7 @@
         </sizepolicy>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 50pt &quot;TT Supermolot&quot;; font-weight: bold;
-</string>
+        <string notr="true">font-size: 50pt; font-weight: bold</string>
        </property>
        <property name="text">
         <string>0</string>
@@ -185,10 +178,10 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>680</x>
+      <x>1400</x>
       <y>0</y>
-      <width>281</width>
-      <height>511</height>
+      <width>521</width>
+      <height>1051</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="layout_right">
@@ -239,8 +232,7 @@
         </sizepolicy>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 50pt &quot;TT Supermolot&quot;; font-weight: bold;
-</string>
+        <string notr="true">font-size: 50pt; font-weight: bold</string>
        </property>
        <property name="text">
         <string>0</string>
@@ -347,13 +339,13 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>280</x>
+      <x>520</x>
       <y>0</y>
-      <width>401</width>
-      <height>511</height>
+      <width>881</width>
+      <height>1051</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="layouy_middle">
+    <layout class="QGridLayout" name="layout_middle">
      <item row="0" column="0">
       <spacer name="spacer_timer_top">
        <property name="orientation">
@@ -437,40 +429,14 @@
      </item>
     </layout>
    </widget>
-   <widget class="QLabel" name="background">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>940</width>
-      <height>500</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-width: 5px;
-border-style: solid;
-border-radius: 30px;
-border-image: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 rgba(186, 1, 78, 255), stop:1 rgba(0, 174, 239, 255));</string>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <zorder>background</zorder>
-   <zorder>layoutWidget</zorder>
-   <zorder>layoutWidget</zorder>
-   <zorder>layoutWidget</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>960</width>
-     <height>22</height>
+     <width>1920</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
