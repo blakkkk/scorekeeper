@@ -6,7 +6,6 @@ from PyQt6.QtCore import QTimer
 from scorekeeper_ui import Ui_MainWindow
 from options_ui import Ui_Dialog
 
-
 class MainWindow:
     def __init__(self):
         self.main_win = QMainWindow()
@@ -28,17 +27,32 @@ class MainWindow:
                 time // 60                              # floor division on seconds to display minutes
             ) 
             self.ui.lcd_timer_seconds.display(
-                time % 60                               # modulo on seconds to display seconds
+                self.leading_zero(time % 60)            # modulo on seconds to display seconds
             )
+
+            if self.ui.lcd_timer_seconds.value() % 2 == 0: # blink the colon every second
+                self.ui.label_colon.setProperty(
+                    "styleSheet",
+                    "border-color: transparent; font: bold 50pt ""TT Supermolot""",
+                )
+            else:
+                self.ui.label_colon.setProperty(
+                    "styleSheet",
+                    "border-color: transparent; font: bold 50pt ""TT Supermolot""; color: transparent",
+                )
+
         else:                                       # when time is over
             self.timer.stop()                           # stop the timer
             self.ui.button_startstop.setText("Start")   # display start on the button
             self.ui.lcd_timer_minutes.display(
-                self.dialog.ui.spin_minutes.value()     # reset the minutes
+                timer_minutes                           # reset the minutes
             )
             self.ui.lcd_timer_seconds.display(
-                self.dialog.ui.spin_seconds.value()     # reset the seconds
+                timer_seconds                           # reset the seconds
             )
+
+    def leading_zero(self, number):
+        return f"{int(number):02d}"  # add a leading zero to the number if it is less than 10
 
     def signals(self):
         # actions menu
@@ -120,8 +134,12 @@ class MainWindow:
         # reset the scores, timer and scoring list
         self.ui.label_left_score.setText(str(0))
         self.ui.label_right_score.setText(str(0))
-        self.ui.lcd_timer_minutes.display(self.dialog.ui.spin_minutes.value())
-        self.ui.lcd_timer_seconds.display(self.dialog.ui.spin_seconds.value())
+
+        self.ui.lcd_timer_minutes.display(timer_minutes)
+        self.ui.lcd_timer_seconds.display(timer_seconds)
+        self.ui.button_startstop.setText("Start")
+        self.timer.stop()
+
         scoring.clear()
 
     def options(self):
@@ -173,7 +191,11 @@ class MainWindow:
             str(self.dialog.ui.spin_button_bottom.value())
         )
         self.ui.lcd_timer_minutes.display(self.dialog.ui.spin_minutes.value())
-        self.ui.lcd_timer_seconds.display(self.dialog.ui.spin_seconds.value())
+        self.ui.lcd_timer_seconds.display(self.leading_zero(self.dialog.ui.spin_seconds.value()))
+
+        global timer_seconds, timer_minutes
+        timer_minutes = self.dialog.ui.spin_minutes.value()
+        timer_seconds = self.dialog.ui.spin_seconds.value()
 
         # close the dialog window
         self.dialog.close()
@@ -239,8 +261,11 @@ class MainWindow:
             self.ui.button_right_score_middle.setText(settings["button_middle"])
             self.ui.button_right_score_bottom.setText(settings["button_bottom"])
             self.ui.lcd_timer_minutes.display(settings["timer_minutes"])
-            self.ui.lcd_timer_seconds.display(settings["timer_seconds"])
+            self.ui.lcd_timer_seconds.display(self.leading_zero(settings["timer_seconds"]))
 
+            global timer_seconds, timer_minutes
+            timer_minutes = settings["timer_minutes"]
+            timer_seconds = settings["timer_seconds"]
 
 class Options(QDialog):
     def __init__(self, parent=None):
@@ -253,7 +278,6 @@ class Options(QDialog):
     def signals(self):
         pass
 
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     main_win = MainWindow()
@@ -261,5 +285,9 @@ if __name__ == "__main__":
 
     # define the list of scoring actions
     scoring = []
+
+    global timer_seconds, timer_minutes
+    timer_seconds = 0
+    timer_minutes = 0
 
     sys.exit(app.exec())
