@@ -1,6 +1,8 @@
 import sys
 import json
 import os
+import time
+import simpleaudio as sa
 from PyQt6.QtWidgets import QApplication, QMainWindow, QDialog, QFileDialog
 from PyQt6.QtCore import QTimer
 from scorekeeper_ui import Ui_MainWindow
@@ -12,6 +14,9 @@ class MainWindow:
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self.main_win)
         self.signals()
+
+        self.ui.lcd_timer_minutes.display("0")
+        self.ui.lcd_timer_seconds.display("00")
 
     def show(self):
         self.main_win.show()
@@ -43,12 +48,14 @@ class MainWindow:
 
         else:                                       # when time is over
             self.timer.stop()                           # stop the timer
+            for _ in range(1):
+                sa.WaveObject.from_wave_file("buzzer.wav").play()   # play a beep
             self.ui.button_startstop.setText("Start")   # display start on the button
             self.ui.lcd_timer_minutes.display(
                 timer_minutes                           # reset the minutes
             )
             self.ui.lcd_timer_seconds.display(
-                timer_seconds                           # reset the seconds
+                self.leading_zero(timer_seconds)        # reset the seconds
             )
 
     def leading_zero(self, number):
@@ -103,6 +110,9 @@ class MainWindow:
             self.ui.button_startstop.setText("Stop")            # display stop on the button
             self.timer = QTimer()                               # create a timer
             self.timer.timeout.connect(self.update_timer)       # connect the timer to the update_timer function
+            for _ in range(3):
+                sa.WaveObject.from_wave_file("beep.wav").play() # play a beep
+                time.sleep(0.5)
             self.timer.start(1000)                              # start the timer with a 1 second interval
         else:                                               # if the button displays stop (i.e. the timer is running)
             self.ui.button_startstop.setText("Start")           # display start on the button
@@ -136,7 +146,7 @@ class MainWindow:
         self.ui.label_right_score.setText(str(0))
 
         self.ui.lcd_timer_minutes.display(timer_minutes)
-        self.ui.lcd_timer_seconds.display(timer_seconds)
+        self.ui.lcd_timer_seconds.display(self.leading_zero(timer_seconds))
         self.ui.button_startstop.setText("Start")
         self.timer.stop()
 
@@ -214,7 +224,7 @@ class MainWindow:
 
         # an f string the creates a name based on the configuration with the layout: left v right mm˸ss (top, middle, bottom).json
         name = (
-            f"configs/{self.ui.label_left_name.text()} v {self.ui.label_right_name.text()}{int(self.ui.lcd_timer_minutes.value())}˸{int(self.ui.lcd_timer_seconds.value()):02d} ({self.ui.button_left_score_top.text()}, {self.ui.button_left_score_middle.text()}, {self.ui.button_left_score_bottom.text()}).json"
+            f"configs/{self.ui.label_left_name.text()} v {self.ui.label_right_name.text()} {int(self.ui.lcd_timer_minutes.value())}˸{int(self.ui.lcd_timer_seconds.value()):02d} ({self.ui.button_left_score_top.text()}, {self.ui.button_left_score_middle.text()}, {self.ui.button_left_score_bottom.text()}).json"
         )
 
         # create a configs folder if it doesnt exist
