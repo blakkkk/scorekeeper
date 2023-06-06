@@ -58,7 +58,7 @@ class MainWindow:
                 self.leading_zero(timer_seconds)        # reset the seconds
             )
 
-    def leading_zero(self, number):
+    def leading_zero(self, number): # (Flimm, 2022)
         return f"{int(number):02d}"  # add a leading zero to the number if it is less than 10
 
     def signals(self):
